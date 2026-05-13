@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class AStar {
+    static class Node {
+        int v, c;
+        Node(int v, int c) {
+            this.v = v;
+            this.c = c;
+        }
+    }
+
+    static int h(int n, int goal) {
+        return Math.abs(goal - n);
+    }
+
+    public static void main(String[] args) {
+
+        List<Node>[] g = new ArrayList[5];
+
+        for (int i = 0; i < 5; i++)
+            g[i] = new ArrayList<>();
+
+        g[0].add(new Node(1, 2));
+        g[0].add(new Node(2, 4));
+        g[1].add(new Node(3, 7));
+        g[2].add(new Node(4, 1));
+        g[4].add(new Node(3, 2));
+
+        PriorityQueue<Node> pq =
+                new PriorityQueue<>((a, b) -> a.c - b.c);
+
+        boolean vis[] = new boolean[5];
+
+        pq.add(new Node(0, 0));
+
+        while (!pq.isEmpty()) {
+
+            Node cur = pq.poll();
+
+            if (cur.v == 3) {
+                System.out.println("Goal Reached");
+                break;
+            }
+
+            if (vis[cur.v]) continue;
+
+            vis[cur.v] = true;
+
+            for (Node n : g[cur.v])
+                pq.add(new Node(n.v, n.c + h(n.v, 3)));
+        }
+    }
+}
